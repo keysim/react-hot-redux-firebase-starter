@@ -67,6 +67,21 @@ export function createUserWithEmailAndPassword(user) {
   };
 }
 
+export function sendMessage(message) {
+  return (dispatch) => {
+    dispatch(beginAjaxCall());
+    return firebaseApi.databasePush("/messages/", message)
+      .then(
+        message => {
+          dispatch({type:types.USER_SENT_MESSAGE_SUCCESS});
+        })
+      .catch(error => {
+        dispatch(ajaxCallError(error));
+        throw(error);
+      });
+  };
+}
+
 export function signInWithEmailAndPassword(user) {
   return (dispatch) => {
     dispatch(beginAjaxCall());
